@@ -11,6 +11,7 @@ class Wizard(MovingSprite):
     next_horiz_cord: int  # an int value of X pos of sprite
 
     def __init__(self, x, y):
+        print(os.getcwd())
         super().__init__(Rect(x, y, 60, 95), 8, "resources/wizard/wizard")
         self.time_in_air = 0
         self.is_moving = False

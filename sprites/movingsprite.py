@@ -55,7 +55,7 @@ class MovingSprite(Sprite):
     def __fill_image_urls(self) -> []:
         img_url_list = []
         for i in range(1, self.num_images + 1):
-            img_url_list.append(f"TimeWizardPython/{self.image_url_prefix} ({i}).png")
+            img_url_list.append(f"{self.image_url_prefix} ({i}).png")
         return img_url_list
 
     def update(self) -> bool:

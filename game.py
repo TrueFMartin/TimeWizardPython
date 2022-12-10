@@ -1,4 +1,7 @@
 from __future__ import annotations
+
+import os
+
 from sprites import fireball, skeleton, pipe, sprite, wizard
 import pygame
 from pygame.locals import *
@@ -97,10 +100,10 @@ class View:
         self.__scroll_x = 0
         self.__scroll_y = 0
         # ----Load background, ground, and text-----
-        self.__background = pygame.image.load("TimeWizardPython/resources/background/background.png")
+        self.__background = pygame.image.load("resources/background/background.png")
         self.__background = pygame.transform.scale(self.__background, (get_screen_w(), get_screen_h()))
         self.__background.convert_alpha(self.__background)
-        self.__ground = pygame.image.load("TimeWizardPython/resources/background/ground.png")
+        self.__ground = pygame.image.load("resources/background/ground.png")
         self.__ground = pygame.transform.scale(self.__ground, (300, 351))
         self.__ground.convert_alpha(self.__ground)
         # ----Font and button style----
