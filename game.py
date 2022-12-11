@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import pickle
 
 from sprites import fireball, skeleton, pipe, sprite, wizard
 import pygame
@@ -13,7 +14,7 @@ def get_screen_w() -> int:
 
 
 def get_screen_h() -> int:
-    return 816
+    return 700
 
 
 class Model:
@@ -84,6 +85,28 @@ class Model:
         x, y = self.wizard.rect.midright
         self.sprites.append(fireball.Fireball(x, y, not self.wizard.horiz_flip))
 
+    def save(self):
+        save_db = []
+        for spriter in self.sprites:
+            save_db.append(spriter.save_helper())
+        s_file = open("savefile.pickle", "wb")
+        pickle.dump(save_db, s_file)
+        s_file.close()
+
+    def load(self):
+        l_file = open("savefile.pickle", "rb")
+        self.sprites.clear()
+        temp_db = pickle.load(l_file)
+        for spriter in temp_db:
+            if spriter["type"] == "Wizard":
+                self.wizard = wizard.Wizard(spriter["x"], spriter["y"])
+                self.sprites.append(self.wizard)
+            if spriter["type"] == "Pipe":
+                self.sprites.append(pipe.Pipe(spriter["x"], spriter["y"]))
+            if spriter["type"] == "Skeleton":
+                self.sprites.append(skeleton.Skeleton(spriter["x"], spriter["y"]))
+        l_file.close()
+
 
 class View:
     __scroll_x: int
@@ -95,7 +118,8 @@ class View:
 
     def __init__(self, model: Model):
         __screen_size = (get_screen_w(), get_screen_h())
-        self.__screen = pygame.display.set_mode(__screen_size, 32)
+        pygame.display.set_caption("Time Wizard")
+        self.__screen = pygame.display.set_mode(__screen_size, pygame.RESIZABLE)
         self.__model = model
         self.__scroll_x = 0
         self.__scroll_y = 0
@@ -166,6 +190,11 @@ class Controller:
             elif event.type == KEYUP:
                 if event.key == K_RCTRL or event.key == K_LCTRL:
                     self.model.create_fireball()
+                if event.key == K_s:
+                    self.model.save()
+                if event.key == K_l:
+                    self.model.load()
+
             elif event.type == pygame.MOUSEBUTTONUP:
                 x, y = pygame.mouse.get_pos()
                 if self.view._button.collidepoint(x, y):

@@ -32,4 +32,5 @@ class Sprite(pygame.sprite.Sprite):
     def get_base_speed(self):
         return self.__BASE_SPEED
 
-
+    def save_helper(self):
+        return {"x": self.rect.left, "y":self.rect.top, "type":self.__class__.__name__}
